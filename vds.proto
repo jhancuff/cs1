@@ -1,0 +1,153 @@
+syntax = "proto3";
+
+package vds;
+
+option go_package = "vdsproto";
+option java_multiple_files = true;
+option java_package = "org.archon.cs1.vds";
+option csharp_namespace = "Archon.CS1.VDS";
+
+// Vehicle Data Service (gRPC over HTTP/2).
+// Transport: USB-Ethernet (CDC ECM/RNDIS). TLS with mutual auth.
+
+service PowerService {
+  rpc SubscribeIgnition(SubscribeRequest) returns (stream IgnitionEvent);
+  rpc Sleep(SleepRequest) returns (Ack);
+  rpc Wake(WakeRequest) returns (Ack);
+}
+
+service VehicleService {
+  rpc SubscribeVehicle(SubscribeRequest) returns (stream VehicleSnapshot);
+}
+
+service SWCService {
+  rpc SubscribeButtons(SubscribeRequest) returns (stream ButtonEvent);
+}
+
+service ChimeService {
+  rpc PlayChime(ChimeRequest) returns (Ack);
+}
+
+service CameraService {
+  rpc ListCameras(ListRequest) returns (CameraList);
+}
+
+service ClimateService {
+  rpc GetSnapshot(GetRequest) returns (ClimateSnapshot);
+  rpc SetSetpoint(SetpointRequest) returns (Ack); // policy-gated
+}
+
+service LightingService {
+  rpc SubscribeLighting(SubscribeRequest) returns (stream LightingSnapshot);
+}
+
+// ---------- Messages ----------
+
+message SubscribeRequest {}
+message GetRequest {}
+message ListRequest {}
+message Ack { bool ok = 1; string msg = 2; }
+
+enum IgnitionState {
+  IG_OFF = 0;
+  IG_ACC = 1;
+  IG_RUN = 2;
+}
+
+message SleepRequest { uint32 timeout_s = 1; }
+message WakeRequest { }
+
+message IgnitionEvent {
+  IgnitionState state = 1;
+  int64 ts_ms = 2;
+}
+
+message VehicleSnapshot {
+  string vin = 1;
+  double odometer_km = 2;
+  double speed_kph = 3;
+  string gear = 4; // P R N D M etc.
+  double fuel_percent = 5;
+  double soc_percent = 6;
+  repeated TPressure tpms = 7;
+  Doors doors = 8;
+  double ambient_c = 9;
+  int64 ts_ms = 10;
+}
+
+message TPressure {
+  string pos = 1; // FL, FR, RL, RR
+  double kpa = 2;
+  double temp_c = 3;
+}
+
+message Doors {
+  bool driver = 1;
+  bool passenger = 2;
+  bool rear_left = 3;
+  bool rear_right = 4;
+  bool hood = 5;
+  bool trunk = 6;
+}
+
+enum ButtonCode {
+  BTN_UNKNOWN = 0;
+  BTN_VOL_UP = 1;
+  BTN_VOL_DOWN = 2;
+  BTN_NEXT = 3;
+  BTN_PREV = 4;
+  BTN_VOICE = 5;
+  BTN_OK = 6;
+  BTN_BACK = 7;
+  BTN_CUSTOM1 = 8;
+  BTN_CUSTOM2 = 9;
+}
+
+message ButtonEvent {
+  ButtonCode code = 1;
+  bool long_press = 2;
+  uint32 repeat = 3;
+  int64 ts_ms = 4;
+}
+
+message ChimeRequest {
+  uint32 id = 1;       // standardized ID
+  uint32 priority = 2; // 0..3
+  float volume = 3;    // 0.0..1.0
+  uint32 duration_ms = 4;
+}
+
+message CameraInfo {
+  string id = 1;
+  string name = 2;
+  uint32 width = 3;
+  uint32 height = 4;
+  uint32 fps = 5;
+  string encoding = 6; // h264, mjpeg, yuy2
+  bool is_reverse = 7;
+  bool is_adas = 8;
+}
+
+message CameraList {
+  repeated CameraInfo cameras = 1;
+}
+
+message ClimateSnapshot {
+  double driver_setpoint_c = 1;
+  double pass_setpoint_c = 2;
+  uint32 fan = 3; // 0..7
+  string mode = 4; // AUTO, FACE, FEET, DEFROST...
+  int64 ts_ms = 5;
+}
+
+message SetpointRequest {
+  string zone = 1; // "driver", "pass"
+  double c = 2;
+}
+
+message LightingSnapshot {
+  bool headlights_on = 1;
+  bool auto_mode = 2;
+  uint32 dim_level = 3; // 0..100 UI suggestion
+  int64 ts_ms = 4;
+}

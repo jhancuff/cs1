@@ -36,4 +36,4 @@ protoc --csharp_out=. --grpc_csharp_out=. vds.proto
 Run Torque on the HU, subscribe to OBDII PIDs, and re-publish them into `vds.vehicle` topics so other apps can consume them consistently.
 
 ## License
-CC-BY 4.0 — free to use, remix, extend with attribution.
+GPL v3

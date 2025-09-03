@@ -1,7 +1,7 @@
 # CS-1: Single-Connector Infotainment Interface (Draft v0.9)
 
 **Date:** September 03, 2025  
-**License:** CC-BY 4.0  
+**License:** GPL v3  
 **Authors:** Archon & Alice (working draft)  
 
 ---

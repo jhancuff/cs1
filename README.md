@@ -31,4 +31,4 @@ python client/python/client.py
 ```
 
 ## License
-CC-BY 4.0
+GPL v3

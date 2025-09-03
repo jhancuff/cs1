@@ -1,39 +1,34 @@
-# CS-1 Infotainment Interface (Draft v0.9)
+# CS-1: Single-Connector Infotainment Interface
 
-This repo contains the working draft of **CS-1: Single-Connector Infotainment Interface**.
+This repository contains the **Chainsaw Standard (CS-1)** specification and reference implementation scaffolding.
 
 ## Contents
-- `CS-1_Infotainment_Interface_Spec_v0.9.docx` — Draft spec sheet (Word format)
-- `vds.proto` — gRPC service + message definitions for Vehicle Data Service
-- `vds.schema.json` — JSON Schema for pub/sub + RPC envelopes
+- `docs/SPEC.md` — Full Markdown spec (GitHub-friendly).
+- `proto/` — gRPC definitions (`vds.proto`).
+- `schema/` — JSON schema for envelopes.
+- `server/python/` — Example HU-side gRPC server.
+- `client/python/` — Example client that subscribes to streams.
+- `tools/torque_bridge/` — Skeleton that forwards OBD-II PIDs into VDS topics.
+- `tools/vbm_emulator/` — Vehicle Bridge Module emulator for local testing.
+- `docker/` — Container build for quick trials.
 
-## Build Notes
-### Proto Compilation
-To generate stubs:
-
+## Quick Start (Python)
 ```bash
-protoc --go_out=. --go-grpc_out=. vds.proto
-protoc --python_out=. --grpc_python_out=. vds.proto
-protoc --java_out=. --grpc-java_out=. vds.proto
-protoc --csharp_out=. --grpc_csharp_out=. vds.proto
+# 1) Generate Python stubs
+make -C server/python proto
+
+# 2) Install deps
+python -m venv .venv && source .venv/bin/activate
+pip install -r server/python/requirements.txt
+
+# 3) Run server
+python server/python/server.py
+
+# 4) Run client (separate shell)
+source .venv/bin/activate
+pip install -r client/python/requirements.txt
+python client/python/client.py
 ```
-
-### Example Usage
-- **Server (HU side)** subscribes to topics and makes RPCs like `SetSetpoint`.
-- **Client (VBM side)** publishes ignition, vehicle, SWC, etc.
-
-### Sample JSON (publish event)
-```json
-{
-  "topic": "vds.vehicle",
-  "event": "Gear",
-  "value": "R",
-  "ts": 1693612347123
-}
-```
-
-### Torque → VDS Bridge
-Run Torque on the HU, subscribe to OBDII PIDs, and re-publish them into `vds.vehicle` topics so other apps can consume them consistently.
 
 ## License
-GPL v3
+CC-BY 4.0

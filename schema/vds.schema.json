@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VDS Envelope",
+  "description": "Generic pub/sub and RPC envelope for CS-1 over USB-Ethernet",
+  "type": "object",
+  "oneOf": [
+    {
+      "title": "Publish Event",
+      "type": "object",
+      "properties": {
+        "topic": {
+          "type": "string",
+          "pattern": "^vds\\.[a-z]+"
+        },
+        "event": {
+          "type": "string"
+        },
+        "value": {},
+        "ts": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "topic",
+        "event",
+        "value",
+        "ts"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "title": "RPC Request",
+      "type": "object",
+      "properties": {
+        "service": {
+          "type": "string",
+          "pattern": "^vds\\.[a-z]+"
+        },
+        "method": {
+          "type": "string"
+        },
+        "args": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "service",
+        "method"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

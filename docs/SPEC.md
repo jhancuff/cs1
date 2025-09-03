@@ -2,7 +2,7 @@
 
 **Date:** September 03, 2025  
 **License:** GPL v3  
-**Authors:** Archon & Alice (working draft)  
+**Authors:** Joe Hancuff (working draft)  
 
 ---
 
@@ -158,5 +158,5 @@ See [`vds.schema.json`](./vds.schema.json).
 
 ---
 
-**Contact:** Archon/Alice CS-1 Working Group.  
+**Contact:** Hancuff Automation CS-1 Working Group.  
 **Status:** Draft v0.9 (open for contributions).  

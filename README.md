@@ -7,7 +7,7 @@ CS-1 unifies **power, data, audio, video, and vehicle controls** over one rugged
 
 ---
 
-## 🌟 Vision
+## Vision
 
 - **One connector.** Every OEM and aftermarket HU uses the same port.  
 - **No decoder boxes.** All integration (cameras, SWC, chimes, CAN data, amps) is native.  
@@ -17,7 +17,7 @@ CS-1 unifies **power, data, audio, video, and vehicle controls** over one rugged
 
 ---
 
-## 📂 Repo Structure
+## Repo Structure
 
 ```
 cs1-repo/
@@ -55,7 +55,7 @@ cs1-repo/
 
 ---
 
-## 📜 Specification
+## Specification
 
 The detailed technical specification is in [`docs/SPEC.md`](docs/SPEC.md). Highlights:
 
@@ -68,7 +68,7 @@ The detailed technical specification is in [`docs/SPEC.md`](docs/SPEC.md). Highl
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Python server + client
 
@@ -106,14 +106,14 @@ docker run --rm -p 50051:50051 cs1-vds
 
 ---
 
-## 🔧 Tools
+## Tools
 
 - **Torque Bridge:** Listens for Torque Realtime Web Server UDP broadcasts, repackages OBD-II PIDs into `vds.vehicle` events. Extendable to any OBD-II source.  
 - **VBM Emulator:** Placeholder for a real Vehicle Bridge Module; currently use `server/python/server.py` as your simulator.  
 
 ---
 
-## 📡 Protocols
+## Protocols
 
 - **gRPC services:** Power, Vehicle, SWC, Chime, Camera, Climate, Lighting.  
 - **Messages:** JSON envelopes validated by [`schema/vds.schema.json`](schema/vds.schema.json).  
@@ -129,7 +129,7 @@ docker run --rm -p 50051:50051 cs1-vds
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork and branch off `main`.  
 2. Update the spec in [`docs/SPEC.md`](docs/SPEC.md).  
@@ -141,20 +141,20 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ---
 
-## 🛡️ Security
+##  Security
 
 Found a vulnerability? Please follow [SECURITY.md](SECURITY.md) — do **not** file public issues for exploits.  
 
 ---
 
-## 📜 License
+## License
 
 - Code and documentation are licensed under the **GNU General Public License v3 (GPL v3)**.  
 - See [LICENSE](LICENSE) and [COPYING](COPYING).  
 
 ---
 
-## 🧭 Roadmap
+## Roadmap
 
 - [ ] Expand VBM emulator to handle mock CAN, UVC, and UAC devices.  
 - [ ] Implement Torque Bridge → gRPC publisher.  
